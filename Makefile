@@ -1,10 +1,11 @@
-CC = gcc
-CFLAGS = -W -Wall -ansi -std=c99 -g
+CC = g++
+CFLAGS = -W -Wall -ansi -std=c++0x -g
 LIBS = -L./SDL2_ttf/.libs -L./SDL2_image/.libs
 LDFLAGS = `sdl2-config --cflags --libs`
 INCLUDES = -I./SDL2_ttf -I./SDL2_image
 EXEC = main
-SRC = main.c fonctionSDL.c
+SRC = main.cpp fonctionSDL.cpp Joueur.cpp
+DEPS = functions_SDL.h 
 OBJ = $(SRC:.c=.o)
 
 all: $(EXEC)
