@@ -8,10 +8,9 @@
 //charger une image et retourner la surface de texture associée.
 SDL_Texture* charger_image (const char* nomfichier, SDL_Renderer* renderer)
 {
-	// Charger une image
 	SDL_Surface* surface = SDL_LoadBMP(nomfichier) ;
-	// Convertir la surface de l’image au format texture avant de l’appliquer
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer,surface);	
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);	
 	return texture;
 } 
 

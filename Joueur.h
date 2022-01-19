@@ -6,15 +6,13 @@
 
 class Joueur{
 protected:
-	char nom[20];
 	int pv; 
 	double posX; 
 	double posY; 
+	double acceleration;
+	double vitesseMax;
 	double vX; 
 	double vY; 
-	double vitesseMin; 
-	double coeffDeceleration; 
-	double acceleration; 
 	SDL_Rect* rect;
 public:
 	Joueur();
@@ -26,10 +24,12 @@ public:
 	double GetPosY();
 	double GetVX();
 	double GetVY();
-	double GetVitesseMax();
-	double GetCoeffDeceleration();
-	double GetAcceleration();
 	SDL_Rect* GetRect();
+	void Move(bool z, bool q, bool s, bool d);
+	void MoveUp();
+	void MoveDown();
+	void MoveRight();
+	void MoveLeft();
 	void Affichage();
 };
 
