@@ -33,7 +33,9 @@ public:
 	void UpdateRect();
 	void MoveRight();
 	void MoveLeft();
-	void Affichage();
+	void Hurt();
+	void Aggro(double x);
+	void AffichageTerminal();
 };
 
 

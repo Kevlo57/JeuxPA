@@ -8,13 +8,15 @@
 
 class Monde{
 protected:
-	Ennemi* ennemi;
+	int nb_ennemi;
+	int tableauActuel;
+	Ennemi** tabEnnemi;
 	Joueur* joueur;
 public:
 	Monde();
 	~Monde();
 
-	Ennemi* GetEnnemi();
+	Ennemi* GetEnnemi(int indice);
 	Joueur* GetJoueur();
 };
 #endif

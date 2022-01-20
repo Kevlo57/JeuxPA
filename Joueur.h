@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include "Ennemi.h"
 
 class Joueur{
 protected:
@@ -20,6 +21,7 @@ protected:
 	double fallAcceleration;
 	double jumpAcceleration;
 	double jumpDeceleration;
+	int recovery;
 	SDL_Rect* rect;
 public:
 	Joueur();
@@ -42,7 +44,16 @@ public:
 	void TestJumping();
 	void SetFall(bool f);
 	void SetJump(bool j);
-	void Affichage();
+	void CollisionEnnemi(Ennemi* e);
+	bool CollisionEnnemiDroit(Ennemi* e);
+	bool CollisionEnnemiGauche(Ennemi* e);
+	bool CollisionEnnemiHaut(Ennemi* e);
+	void PushLeft();
+	void PushRight();
+	bool IsInRecovery();
+	void Hurt();
+	void Hit(Ennemi* e);
+	void AffichageTerminal();
 };
 
 

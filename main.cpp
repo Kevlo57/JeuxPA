@@ -61,32 +61,47 @@ int main(){
 					break;
 					case SDLK_q:	
 						monde->GetJoueur()->MoveLeft();
-					break;
-					case SDLK_SPACE:	
-						monde->GetJoueur()->SetJump(true);
-					break;	
-					case SDLK_z:	
-						monde->GetJoueur()->SetJump(true);
-					break;				
+					break;					
+				}
+			}else if(evenements.type == SDL_MOUSEBUTTONDOWN){
+				if(evenements.button.button == SDL_BUTTON_LEFT){
+					monde->GetJoueur()->SetJump(true);
 				}
 			}	
 		}
-		//monde->GetJoueur()->Affichage();
+		//monde->GetJoueur()->AffichageTerminal();
+		//monde->GetEnnemi(0)->AffichageTerminal();
 		monde->GetJoueur()->Update();
-		monde->GetEnnemi()->Update();
-
+		monde->GetEnnemi(0)->Update();
+		monde->GetJoueur()->CollisionEnnemi(monde->GetEnnemi(0));
+		monde->GetEnnemi(0)->Aggro(monde->GetJoueur()->GetPosX());
+		if(monde->GetJoueur()->IsInRecovery()){
+			joueur_texture = charger_image("ressources/joueur/joueurRecovery.bmp",ecran);
+		}else{
+			joueur_texture = charger_image("ressources/joueur/joueur.bmp",ecran);
+		}
 		SDL_RenderClear(ecran);
 		SDL_RenderCopy(ecran,fond,NULL,NULL);
-		SDL_RenderCopy(ecran,bob_texture,NULL,monde->GetEnnemi()->GetRect());
+		SDL_RenderCopy(ecran,bob_texture,NULL,monde->GetEnnemi(0)->GetRect());
 		SDL_RenderCopy(ecran,joueur_texture,NULL,monde->GetJoueur()->GetRect());
 
 		SDL_RenderPresent(ecran);
+
+		if(monde->GetJoueur()->GetPV()==0){
+			terminer = true;
+		}
 
 		frame_time = SDL_GetTicks() - frame_start;
 		if(frame_delay > frame_time){
 			SDL_Delay(frame_delay-frame_time);
 		}
 	}
+	//Affichage game_over
+	SDL_RenderClear(ecran);
+	fond = charger_image("ressources/fond/gameover.bmp",ecran);
+	SDL_RenderCopy(ecran,fond,NULL,NULL);
+	SDL_RenderPresent(ecran);
+	SDL_Delay(2000);
 
 	// Libérer la memoire
 	SDL_DestroyTexture(bob_texture) ;

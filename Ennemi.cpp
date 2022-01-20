@@ -5,15 +5,15 @@ Ennemi::Ennemi(){
 }
 
 Ennemi::Ennemi(double x,double y){
-	pv = 3;
+	pv = 1;
 	posX = x;
 	posY = y;
-	acceleration = 3;
+	acceleration = 1;
 	vX = 0;
 	vY = 0;
 	vitesseMin = 0.001;
-	vitesseMax = 15;
-	coeffDeceleration = 0.920;
+	vitesseMax = 3;
+	coeffDeceleration = 0.950;
 	rect = new SDL_Rect;
 	rect->x = posX;
 	rect->y = posY;
@@ -75,20 +75,20 @@ void Ennemi::UpdateSpeed(){
 }
 
 void Ennemi::UpdateRect(){
-	/*
-	if(rect->x<(int)posX){
-		rect->x++;
-	}else if(rect->x>(int)posX){
-		rect->x--;
-	}
-	if(rect->y<(int)posY){
-		rect->y++;
-	}else if(rect->y>(int)posY){
-		rect->y--;
-	}
-	*/
 	rect->x = posX;
 	rect->y = posY;
+	if(pv == 0){
+		posX = -9999;
+		posY = -9999;
+	}
+}
+
+void Ennemi::Aggro(double x){
+	if(posX+120<x){
+		MoveRight();
+	}else{
+		MoveLeft();
+	}
 }
 
 void Ennemi::UpdatePos(){
@@ -96,8 +96,17 @@ void Ennemi::UpdatePos(){
 	posY += vY;
 }
 
-void Ennemi::Affichage(){
+void Ennemi::Hurt(){
+	pv--;
+	if(pv == 0){
+		posX = -9999;
+		posY = -9999;
+	}
+}
+
+void Ennemi::AffichageTerminal(){
 	std::cout << "Ennemi : " << std::endl;
+	std::cout << "pv = " << pv << std::endl;
 	std::cout << "posX = " << posX << std::endl;
 	std::cout << "posY = " << posY << std::endl;
 	std::cout << "rectX = " << rect->x << std::endl;

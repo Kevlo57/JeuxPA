@@ -16,14 +16,15 @@ Joueur::Joueur(double x,double y){
 	coeffDeceleration = 0.920;
 	jump = false;
 	fall = false;
-	fallAcceleration = 1.05;
+	fallAcceleration = 1.15;
 	jumpAcceleration = 1.3;
-	jumpDeceleration = 0.900;
+	jumpDeceleration = 0.850;
 	rect = new SDL_Rect;
 	rect->x = posX;
 	rect->y = posY;
 	rect->w = 80;
 	rect->h = 80;
+	recovery = 0;
 }
 
 Joueur::~Joueur(){
@@ -126,29 +127,81 @@ void Joueur::UpdateSpeed(){
 }
 
 void Joueur::UpdateRect(){
-	/*
-	if(rect->x<(int)posX){
-		rect->x++;
-	}else if(rect->x>(int)posX){
-		rect->x--;
-	}
-	if(rect->y<(int)posY){
-		rect->y++;
-	}else if(rect->y>(int)posY){
-		rect->y--;
-	}
-	*/
 	rect->x = posX;
 	rect->y = posY;
 }
 
 void Joueur::UpdatePos(){
-	posX += vX;
+	if(posX + 80 + vX <0){
+		posX = 1880;
+	}else if(posX + vX >1920){
+		posX = 0;
+	}else{
+		posX += vX;
+	}	
 	posY += vY;
 }
 
-void Joueur::Affichage(){
+void Joueur::CollisionEnnemi(Ennemi* e){
+	if(CollisionEnnemiDroit(e)){
+		PushLeft();
+		Hurt();
+	}else if(CollisionEnnemiGauche(e)){
+		PushRight();
+		Hurt();
+	}else if(CollisionEnnemiHaut(e)){
+		Hit(e);
+		vY *= jumpAcceleration;
+	}
+}
+
+bool Joueur::CollisionEnnemiDroit(Ennemi* e){
+	return posX+80<e->GetPosX()+50 && posX+80>e->GetPosX() && GetPosY()<e->GetPosY()+120 && GetPosY()+80>e->GetPosY();
+}
+
+bool Joueur::CollisionEnnemiGauche(Ennemi* e){
+	return GetPosX()>e->GetPosX()+50 && GetPosX()<e->GetPosX()+120 && GetPosY()<e->GetPosY()+120 && GetPosY()+80>e->GetPosY();
+}
+
+bool Joueur::CollisionEnnemiHaut(Ennemi* e){
+	return GetPosY()+80<e->GetPosY()+50 && GetPosY()+80>e->GetPosY() && GetPosX()<e->GetPosX()+120 && GetPosX()+80>e->GetPosX();
+}
+
+void Joueur::PushLeft(){
+	vX = -vitesseMax*2;
+}
+
+void Joueur::PushRight(){
+	vX = vitesseMax*2;
+}
+
+bool Joueur::IsInRecovery(){
+	unsigned int ticks = SDL_GetTicks();
+	if(recovery<1000){
+		return false;
+	}else if(ticks - recovery < 1000){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
+void Joueur::Hurt(){
+	unsigned int ticks = SDL_GetTicks();
+	if(ticks - recovery > 1000){
+		pv--;
+		recovery = ticks;
+	}
+}
+
+void Joueur::Hit(Ennemi* e){
+	e->Hurt();
+}
+
+void Joueur::AffichageTerminal(){
 	std::cout << "Joueur : " << std::endl;
+	std::cout << "pv = " << pv << std::endl;
 	std::cout << "posX = " << posX << std::endl;
 	std::cout << "posY = " << posY << std::endl;
 	std::cout << "rectX = " << rect->x << std::endl;
