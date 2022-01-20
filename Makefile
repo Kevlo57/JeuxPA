@@ -4,7 +4,7 @@ LIBS = -L./SDL2_ttf/.libs -L./SDL2_image/.libs
 LDFLAGS = `sdl2-config --cflags --libs`
 INCLUDES = -I./SDL2_ttf -I./SDL2_image
 EXEC = main
-SRC = main.cpp fonctionSDL.cpp Joueur.cpp Orc.cpp Tableau.cpp
+SRC = main.cpp Monde.cpp fonctionSDL.cpp Joueur.cpp Ennemi.cpp
 DEPS = functions_SDL.h 
 OBJ = $(SRC:.c=.o)
 
